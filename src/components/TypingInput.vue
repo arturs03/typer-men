@@ -21,13 +21,15 @@ import { useTypingStore } from '@/stores/typing'
 import { mapActions, mapState } from 'pinia'
 import { defineComponent } from 'vue'
 
+const SECONDS_IN_MINUTE = 60
+
 export default defineComponent({
     name: 'TypingInput',
     data: () => ({
-        typedText: [],
+        typedText: [] as Array<string>,
         currentWord: '',
         timer: 0,
-        time: 20.0,
+        time: SECONDS_IN_MINUTE / 2,
         resultWPM: 0,
     }),
     computed: {
@@ -45,7 +47,7 @@ export default defineComponent({
                     if (this.time <= 0.1) {
                         clearInterval(this.timer)
                         this.time = 0.0
-                        this.resultWPM = this.getNetWPM()
+                        this.resultWPM = this.getGrossWPM()
                         return
                     }
 
@@ -66,12 +68,12 @@ export default defineComponent({
             )
         },
         getGrossWPM(): number {
-            return this.typedText.length / 5 / 0.25
+            return this.typedText.length / 2.5 / 0.5
         },
         getNetWPM(): number {
             return (
                 (this.typedText.length / 5 - this.getIncorrectAnswerCount()) /
-                0.25
+                0.5
             )
         },
     },

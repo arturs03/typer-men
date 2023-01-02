@@ -4,20 +4,20 @@ export const useTypingStore = defineStore('typing', {
     state: () => {
         return {
             text: '',
-            typedTextSplit: [],
+            typedTextSplit: [] as Array<String>,
             currentWordIndex: 0,
         }
     },
     getters: {
-        textSplitInWords: (state): Array<string> => state.text.split(' '),
-        typedTextResults(state): Array<boolean> {
+        textSplitInWords: (state): Array<any> => state.text.split(' '),
+        typedTextResults(): Array<boolean> {
             if (!this.typedTextSplit.length) {
                 return []
             }
 
             return this.typedTextSplit.map(
                 (text: String, index: any): boolean => {
-                    return state.textSplitInWords[index] === text
+                    return this.textSplitInWords[index] === text
                 }
             )
         },
@@ -29,7 +29,7 @@ export const useTypingStore = defineStore('typing', {
         setTypedText(typedText: Array<String>) {
             this.typedTextSplit = typedText
         },
-        setCurrentWord(index: Number) {
+        setCurrentWord(index: number) {
             this.currentWordIndex = index
         },
         resetStates() {
